@@ -2,12 +2,12 @@
   "name": "checkpoint_backend",
   "version": "1.0.0",
   "description": "backend with express and typeOrm for the checkpoint-network",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "nodemon ./src/index.ts",
-    "start": "node ./dist/index.ts"
+    "dev": "nodemon ./src/server.ts",
+    "start": "node ./dist/server.ts"
   },
   "author": "",
   "license": "ISC",
