@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm"
+import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from "typeorm"
 import { Role } from "../role/Role"
 import { Upload } from "../upload/Upload"
+import { UploadComment } from "../upload_comment/UploadComment"
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -36,8 +37,28 @@ export class User extends BaseEntity {
 
     @ManyToOne(() => Role, (role) => role.users)
     @JoinColumn({ name: 'role_id' })
-    role!: Role[]
+    role!: Role
 
     @OneToMany(() => Upload, (upload) => upload.user)
-    users!: User[]
+    uploads!: Upload[]
+
+    @OneToMany(() => UploadComment, (uploadComment) => uploadComment.author)
+    uploadComments!: UploadComment[]
+
+    @ManyToMany(() => User, (user) => user.following)
+    @JoinTable({
+        name: 'followers',
+        joinColumn: {
+            name: 'followerId',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'followingId',
+            referencedColumnName: 'id'
+        }
+    })
+    followers!: User[]
+
+    @ManyToMany(() => User, (user) => user.followers)
+    following!: User[]
 }
