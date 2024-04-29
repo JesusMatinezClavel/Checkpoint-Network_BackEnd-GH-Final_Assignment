@@ -13,17 +13,20 @@ export class Uploads1714409184938 implements MigrationInterface {
                         isPrimary: true,
                         isGenerated: true,
                         generationStrategy: 'increment'
-                    }, {
+                    },
+                    {
                         name: 'name',
                         type: 'varchar',
                         length: '255',
                         isNullable: false
-                    }, {
+                    },
+                    {
                         name: 'path',
                         type: 'varchar',
                         length: '500',
                         isNullable: false
-                    }, {
+                    },
+                    {
                         name: 'description',
                         type: 'text'
                     },
@@ -61,6 +64,7 @@ export class Uploads1714409184938 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable('uploads')
     }
 
 }
