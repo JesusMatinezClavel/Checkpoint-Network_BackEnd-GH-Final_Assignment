@@ -10,7 +10,8 @@
     "start": "node ./dist/server.ts",
     "add-migration": "typeorm migration:create",
     "run-migrations": "typeorm-ts-node-commonjs migration:run -d ./src/database/db.ts",
-    "revert-migrations":"typeorm-ts-node-commonjs migration:revert -d ./src/database/db.ts"
+    "revert-migrations": "typeorm-ts-node-commonjs migration:revert -d ./src/database/db.ts",
+    "add-entity": "typeorm entity:create"
   },
   "author": "",
   "license": "ISC",
