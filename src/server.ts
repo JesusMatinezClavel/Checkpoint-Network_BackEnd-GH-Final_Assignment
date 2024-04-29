@@ -1,11 +1,15 @@
 import { app } from "./app";
 import { AppDataSource } from "./database/db";
+import 'dotenv/config'
+
+const PORT = process.env.PORT || 4001
+
 
 const startServer = () => {
     AppDataSource.initialize()
         .then(() => {
             console.log('database connected!')
-            app.listen(3000, () => console.log('server connected on port 3000'))
+            app.listen(PORT, () => console.log(`server connected on port: ${PORT}`))
         })
         .catch(error => {
             console.log(error);
