@@ -17,7 +17,6 @@ export class UploadComments1714409199309 implements MigrationInterface {
                     {
                         name: 'message',
                         type: 'text',
-                        length:'255'
                     },
                     {
                         name: 'createdAt',
