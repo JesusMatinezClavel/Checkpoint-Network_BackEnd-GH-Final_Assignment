@@ -1,9 +1,9 @@
 import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm"
-import { Upload } from "../upload/Upload"
 import { User } from "../user/User"
+import { Post } from "../post/Post"
 
-@Entity('upload_comments')
-export class UploadComment extends BaseEntity {
+@Entity('post_comments')
+export class PostComment {
     @PrimaryGeneratedColumn()
     id!: number
 
@@ -16,9 +16,9 @@ export class UploadComment extends BaseEntity {
     @Column()
     updatedAt!: Date
 
-    @ManyToOne(() => Upload, (upload) => upload.uploadComments)
-    @JoinColumn({ name: 'upload_id' })
-    upload!: Upload
+    @ManyToOne(() => Post, (post) => post.postComments)
+    @JoinColumn({ name: 'post_id' })
+    post!: Post
 
     @ManyToOne(() => User, (user) => user.uploadComments)
     @JoinColumn({ name: 'author_id' })

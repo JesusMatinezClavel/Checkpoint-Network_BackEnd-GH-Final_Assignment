@@ -34,7 +34,7 @@ export class PostComments1714409218931 implements MigrationInterface {
                         type: 'int'
                     },
                     {
-                        name: 'user_id',
+                        name: 'author_id',
                         type: 'int'
                     }
                 ],

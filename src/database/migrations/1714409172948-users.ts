@@ -54,7 +54,7 @@ export class Users1714409172948 implements MigrationInterface {
                     {
                         name: 'role_id',
                         type: 'int',
-                        isNullable: false
+                        default: 1
                     },
                     {
                         name: 'followers',
