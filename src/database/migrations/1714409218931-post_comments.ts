@@ -40,7 +40,7 @@ export class PostComments1714409218931 implements MigrationInterface {
                 ],
                 foreignKeys: [
                     {
-                        columnNames: ['user_id'],
+                        columnNames: ['author_id'],
                         referencedTableName: 'users',
                         referencedColumnNames: ['id'],
                         onDelete: 'CASCADE'
