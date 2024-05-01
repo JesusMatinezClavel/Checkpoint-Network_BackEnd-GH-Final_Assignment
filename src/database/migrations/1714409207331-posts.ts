@@ -22,7 +22,8 @@ export class Posts1714409207331 implements MigrationInterface {
                     },
                     {
                         name: 'description',
-                        type: 'text',
+                        type: 'varchar',
+                        length: '255'
                     },
                     {
                         name: 'createdAt',

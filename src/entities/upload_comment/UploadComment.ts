@@ -8,7 +8,7 @@ export class UploadComment extends BaseEntity {
     id!: number
 
     @Column()
-    message!: Text
+    message!: string
 
     @Column()
     createdAt!: Date

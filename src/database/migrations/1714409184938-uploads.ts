@@ -23,12 +23,13 @@ export class Uploads1714409184938 implements MigrationInterface {
                     {
                         name: 'path',
                         type: 'varchar',
-                        length: '500',
+                        length: '255',
                         isNullable: false
                     },
                     {
                         name: 'description',
-                        type: 'text'
+                        type: 'varchar',
+                        length: '255'
                     },
                     {
                         name: 'downloadable',

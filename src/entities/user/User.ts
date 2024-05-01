@@ -16,16 +16,16 @@ export class User extends BaseEntity {
     avatar!: string
 
     @Column()
-    bio!: Text
+    bio!: string
 
     @Column()
-    email!: Text
+    email!: string
 
     @Column()
-    password!: Text
+    password!: string
 
     @Column()
-    birthdate!: Text
+    birthdate!: string
 
     @Column()
     isActive!: boolean

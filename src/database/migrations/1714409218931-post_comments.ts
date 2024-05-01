@@ -16,7 +16,8 @@ export class PostComments1714409218931 implements MigrationInterface {
                     },
                     {
                         name: 'message',
-                        type: 'text'
+                        type: 'varchar',
+                        length: '255'
                     },
                     {
                         name: 'createdAt',

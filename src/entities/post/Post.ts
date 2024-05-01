@@ -11,7 +11,7 @@ export class Post {
     title!: string
 
     @Column()
-    description!: Text
+    description!: string
 
     @Column()
     createdAt!: Date

@@ -15,7 +15,7 @@ export class Upload extends BaseEntity {
     path!: string
 
     @Column()
-    description!: Text
+    description!: string
 
     @Column()
     downloadable!: boolean

@@ -8,7 +8,7 @@ export class PostComment {
     id!: number
 
     @Column()
-    message!: Text
+    message!: string
 
     @Column()
     createdAt!: Date

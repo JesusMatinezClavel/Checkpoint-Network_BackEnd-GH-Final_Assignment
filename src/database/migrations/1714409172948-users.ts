@@ -24,11 +24,12 @@ export class Users1714409172948 implements MigrationInterface {
                     {
                         name: 'avatar',
                         type: 'varchar',
-                        length: '500'
+                        length: '255'
                     },
                     {
                         name: 'bio',
-                        type: 'text'
+                        type: 'varchar',
+                        length: '255'
                     },
                     {
                         name: 'email',
