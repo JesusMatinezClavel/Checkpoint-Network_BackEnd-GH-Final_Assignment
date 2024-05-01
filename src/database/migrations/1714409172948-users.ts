@@ -41,7 +41,7 @@ export class Users1714409172948 implements MigrationInterface {
                     {
                         name: 'password',
                         type: 'varchar',
-                        length: '20',
+                        length: '255',
                     },
                     {
                         name: 'birthdate',
@@ -56,16 +56,6 @@ export class Users1714409172948 implements MigrationInterface {
                         name: 'role_id',
                         type: 'int',
                         default: 1
-                    },
-                    {
-                        name: 'followers',
-                        type: 'int',
-                        isNullable: true
-                    },
-                    {
-                        name: 'following',
-                        type: 'int',
-                        isNullable: true
                     },
                     {
                         name: 'createdAt',
@@ -85,19 +75,7 @@ export class Users1714409172948 implements MigrationInterface {
                         referencedTableName: 'roles',
                         referencedColumnNames: ['id'],
                         onDelete: 'CASCADE'
-                    },
-                    {
-                        columnNames: ['followers'],
-                        referencedTableName: 'users',
-                        referencedColumnNames: ['id'],
-                        onDelete: 'CASCADE'
-                    },
-                    {
-                        columnNames: ['following'],
-                        referencedTableName: 'users',
-                        referencedColumnNames: ['id'],
-                        onDelete: 'CASCADE'
-                    },
+                    }
                 ]
             })
         )
