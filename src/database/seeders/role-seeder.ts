@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { AppDataSource } from "../db";
 import { Role } from "../../entities/role/Role";
 

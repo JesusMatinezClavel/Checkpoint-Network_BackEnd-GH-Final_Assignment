@@ -60,12 +60,12 @@ export class Users1714409172948 implements MigrationInterface {
                     {
                         name: 'followers',
                         type: 'int',
-                        isPrimary: true
+                        isNullable: true
                     },
                     {
                         name: 'following',
                         type: 'int',
-                        isPrimary: true
+                        isNullable: true
                     },
                     {
                         name: 'createdAt',

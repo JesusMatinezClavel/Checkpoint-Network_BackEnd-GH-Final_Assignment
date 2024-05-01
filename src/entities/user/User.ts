@@ -25,7 +25,7 @@ export class User extends BaseEntity {
     password!: string
 
     @Column()
-    birthdate!: string
+    birthdate!: Date
 
     @Column()
     isActive!: boolean
