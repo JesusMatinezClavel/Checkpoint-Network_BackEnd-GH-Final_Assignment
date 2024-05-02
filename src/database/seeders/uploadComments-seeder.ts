@@ -17,8 +17,10 @@ const uploadCommentGenerator = async () => {
         for (let id = 0; id < commentsQ; id++) {
             const randomUploadComment = new UploadComment()
             randomUploadComment.upload = upload
-            const author = randomUploadComment.author = users[faker.number.int({ min: 1, max: 20 })]
+            const author = randomUploadComment.author = users[faker.number.int({ min: 0, max: 19 })]
             randomUploadComment.message = `${author.name}: ${faker.lorem.sentence()}`
+            randomUploadComment.createdAt = new Date()
+            randomUploadComment.updatedAt = new Date()
             comments.push(randomUploadComment)
         }
     }

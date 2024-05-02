@@ -3,7 +3,7 @@ import { PostComment } from "../post_comment/PostComment"
 import { Upload } from "../upload/Upload"
 
 @Entity('posts')
-export class Post {
+export class Post extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number
 
