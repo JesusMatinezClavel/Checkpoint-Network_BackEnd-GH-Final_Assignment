@@ -1,6 +1,3 @@
-import { faker } from "@faker-js/faker";
-import bcrypt from "bcrypt";
-
 // Models
 import { User } from "../../entities/user/User";
 import { Upload } from "../../entities/upload/Upload";
@@ -25,21 +22,6 @@ export const seedControlUploads = async () => {
         cube.updatedAt = new Date()
         await Upload.save(cube)
 
-
-        const icoSphere = new Upload()
-        icoSphere.name = `${user.name} - icoSphere`
-        icoSphere.path = '../../../3D-models/Seeders/icoSphere.fbx'
-        icoSphere.description = 'basic icoSphere with beveled edges'
-        icoSphere.user = {
-            id: user.id
-        } as User
-        icoSphere.liked = [{
-            id: user.id
-        } as User]
-        icoSphere.createdAt = new Date()
-        icoSphere.updatedAt = new Date()
-        await Upload.save(icoSphere)
-
         const updateUser = await User.findOne({
             where: {
                 id: user.id
@@ -48,7 +30,7 @@ export const seedControlUploads = async () => {
                 'likes'
             ]
         })
-        updateUser!.likes = [...[cube, icoSphere]]
+        updateUser!.likes = [...[cube]]
         await User.save(updateUser!)
     }
 
