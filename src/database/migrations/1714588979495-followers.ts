@@ -10,11 +10,13 @@ export class Followers1714588979495 implements MigrationInterface {
                     {
                         name: 'followerId',
                         type: 'int',
+                        isPrimary: true,
                         isNullable: false
                     },
                     {
                         name: 'followingId',
                         type: 'int',
+                        isPrimary: true,
                         isNullable: false
                     }
                 ],

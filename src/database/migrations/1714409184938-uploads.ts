@@ -51,10 +51,10 @@ export class Uploads1714409184938 implements MigrationInterface {
                         name: 'author',
                         type: 'int'
                     },
-                    {
-                        name: 'likes',
-                        type: 'int'
-                    }
+                    // {
+                    //     name: 'likes',
+                    //     type: 'int'
+                    // }
                 ],
                 foreignKeys: [
                     {
@@ -63,12 +63,12 @@ export class Uploads1714409184938 implements MigrationInterface {
                         referencedColumnNames: ['id'],
                         onDelete: 'CASCADE'
                     },
-                    {
-                        columnNames: ['likes'],
-                        referencedTableName: 'users',
-                        referencedColumnNames: ['id'],
-                        onDelete: 'CASCADE'
-                    },
+                    // {
+                    //     columnNames: ['likes'],
+                    //     referencedTableName: 'users',
+                    //     referencedColumnNames: ['id'],
+                    //     onDelete: 'CASCADE'
+                    // },
                 ]
             })
         )

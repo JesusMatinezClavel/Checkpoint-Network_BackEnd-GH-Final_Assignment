@@ -28,9 +28,9 @@ export class Upload extends BaseEntity {
 
     @ManyToMany(() => User, (user) => user.likes)
     @JoinTable({
-        name: 'post_likes',
+        name: 'upload_likes',
         joinColumn: {
-            name: 'post_id',
+            name: 'upload_id',
             referencedColumnName: 'id'
         },
         inverseJoinColumn: {
