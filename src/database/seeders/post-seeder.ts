@@ -19,12 +19,12 @@ const postGenerator = async () => {
     return posts
 }
 
-export const postSeeder = async () => {
+export const seederControlPosts = async () => {
     const randomPosts = await postGenerator()
     await Post.save(randomPosts)
 
 
-    console.log('---------------------');
-    console.log('Random posts created!');
-    console.log('---------------------');
+    console.log('----------------------');
+    console.log('Control posts created!');
+    console.log('----------------------');
 }

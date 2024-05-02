@@ -1,6 +1,7 @@
 import { Upload } from "../../entities/upload/Upload";
 import { AppDataSource } from "../db";
-import { postSeeder } from "./post-seeder";
+import { seederControlPosts } from "./post-seeder";
+import { seedControlPostComments } from "./postComments-seeder";
 
 // Seeders
 import { seedRoles } from "./role-seeder";
@@ -17,7 +18,8 @@ const seedDB = async () => {
         .then(() => seedRandomUsers())
         .then(() => seedControlUploads())
         .then(() => seedControlUploadComments())
-        .then(() => postSeeder())
+        .then(() => seederControlPosts())
+        .then(() => seedControlPostComments())
 
         .catch((error) => {
             console.log(error);
