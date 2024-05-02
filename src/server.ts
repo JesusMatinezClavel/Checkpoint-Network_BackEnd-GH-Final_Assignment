@@ -4,7 +4,6 @@ import 'dotenv/config'
 
 const PORT = process.env.PORT || 4001
 
-
 const startServer = () => {
     AppDataSource.initialize()
         .then(() => {
@@ -13,7 +12,6 @@ const startServer = () => {
         })
         .catch(error => {
             console.log(error);
-
         })
 }
 
