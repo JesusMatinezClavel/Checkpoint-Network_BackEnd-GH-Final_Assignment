@@ -2,6 +2,8 @@ import { Request, Response, response } from "express";
 import { catchStatus, tryStatus } from "../../utils/resStatus";
 import dayjs from "dayjs";
 import bcrypt from "bcrypt";
+import 'dotenv/config'
+import jwt from "jsonwebtoken";
 
 // Models
 import { User } from "../user/User";
@@ -132,6 +134,7 @@ export const login = async (req: Request, res: Response) => {
             select: {
                 id: true,
                 email: true,
+                password: true,
                 role: {
                     id: true,
                     name: true
@@ -143,8 +146,28 @@ export const login = async (req: Request, res: Response) => {
             throw new Error('user doesnt exists')
         }
 
+        const isValidPassword = bcrypt.compareSync(password, user?.password)
+        if (!isValidPassword) {
+            throw new Error('invalid authentification')
+        }
 
-        tryStatus(res, 'Register succesful!', user)
+        const token = jwt.sign({
+            userId: user?.id,
+            roleName: user?.role.name
+        },
+            process.env.JWT_secret as string,
+            { expiresIn: '4h' }
+        )
+
+
+
+        const logged = {
+            user: email,
+            token
+        }
+
+
+        tryStatus(res, 'Register succesful!', logged)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'
@@ -166,6 +189,10 @@ export const login = async (req: Request, res: Response) => {
                 case error.message.includes('user doesnt exists'):
                     statusCode = 409
                     errorMessage = "User doesn't exists!"
+                    break;
+                case error.message.includes('invalid authentification'):
+                    statusCode = 401
+                    errorMessage = "Password is incorrect!"
                     break;
                 default:
                     break;
