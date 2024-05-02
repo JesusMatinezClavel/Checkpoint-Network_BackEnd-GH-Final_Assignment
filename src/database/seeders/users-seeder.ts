@@ -57,7 +57,6 @@ export const seedControlUsers = async () => {
     console.log('----------------------');
 
 }
-
 const generateRandomUsers = async () => {
     const randomUser = new User()
     const name = randomUser.name = faker.person.firstName()
@@ -72,7 +71,6 @@ const generateRandomUsers = async () => {
     return randomUser
 
 }
-
 export const seedRandomUsers = async () => {
 
     const userPromises = Array.from({ length: 17 }, generateRandomUsers)

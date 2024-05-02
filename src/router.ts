@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { hola } from "./entities/authentification/auth.controller";
+
+import authRoute from "./entities/authentification/auth.routes";
+
 
 const router = Router()
 
 
-router.use('/auth', hola)
+router.use('/auth', authRoute)
 
 
 
