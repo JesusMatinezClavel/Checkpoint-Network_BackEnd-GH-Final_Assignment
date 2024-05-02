@@ -3,7 +3,7 @@ import { catchStatus, tryStatus } from "../../utils/resStatus";
 import { User } from "./User";
 
 
-export const getOwnProfile = async (req: Request, res: Response) => {
+export const getProfile = async (req: Request, res: Response) => {
     if (req.params.id) {
         try {
             const userId = Number(req.params.id)
