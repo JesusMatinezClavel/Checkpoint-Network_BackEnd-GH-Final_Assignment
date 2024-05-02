@@ -9,7 +9,6 @@ import { User } from "../user/User";
 
 export const register = async (req: Request, res: Response) => {
     try {
-
         const { name, avatar, bio, birthdate, email, password } = req.body
 
         if (!name || !email || !password) {
@@ -102,5 +101,75 @@ export const register = async (req: Request, res: Response) => {
                     break;
             }
         catchStatus(res, statusCode, 'CANNOT REGISTER', new Error(errorMessage))
+    }
+}
+
+export const login = async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body
+
+        if (!email || !password) {
+            throw new Error('required fields')
+        }
+
+        const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+        if (!validEmail.test(email)) {
+            throw new Error('invalid email')
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
+        if (!passwordRegex.test(password)) {
+            throw new Error('invalid password')
+        }
+
+        const user = await User.findOne({
+            where: {
+                email: email
+            },
+            relations: {
+                role: true
+            },
+            select: {
+                id: true,
+                email: true,
+                role: {
+                    id: true,
+                    name: true
+                }
+            }
+        })
+
+        if (!user) {
+            throw new Error('user doesnt exists')
+        }
+
+
+        tryStatus(res, 'Register succesful!', user)
+    } catch (error) {
+        let statusCode: number = 500
+        let errorMessage: string = 'Unkown error ocurred...'
+
+        if (error instanceof Error)
+            switch (true) {
+                case error.message.includes('required fields'):
+                    statusCode = 400
+                    errorMessage = 'email and password are necessary! '
+                    break;
+                case error.message.includes('invalid email'):
+                    statusCode = 400
+                    errorMessage = 'Invalid email!'
+                    break;
+                case error.message.includes('invalid password'):
+                    statusCode = 400
+                    errorMessage = 'Passwords needs to be 6-10 longer, and have an Uppercase, a Lowercase and a number'
+                    break;
+                case error.message.includes('user doesnt exists'):
+                    statusCode = 409
+                    errorMessage = "User doesn't exists!"
+                    break;
+                default:
+                    break;
+            }
+        catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
     }
 }
