@@ -135,6 +135,7 @@ export const login = async (req: Request, res: Response) => {
                 id: true,
                 email: true,
                 password: true,
+                isActive: true,
                 role: {
                     id: true,
                     name: true
@@ -159,15 +160,25 @@ export const login = async (req: Request, res: Response) => {
             { expiresIn: '4h' }
         )
 
+        await User.update(
+            {
+                id: user.id
+            },
+            {
+                isActive: true
+            }
+        )
 
+        const { isActive, name, ...restUser } = user
 
         const logged = {
             user: email,
+            isActive: isActive,
             token
         }
 
 
-        tryStatus(res, 'Register succesful!', logged)
+        tryStatus(res, 'Loggin succesful!', logged)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'
