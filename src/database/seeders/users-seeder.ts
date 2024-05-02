@@ -75,62 +75,32 @@ const generateRandomUsers = async () => {
 
 export const seedRandomUsers = async () => {
 
-    // const userPromises = Array.from({ length: 17 }, generateRandomUsers)
-    // const randomUsers = await Promise.all(userPromises)
-    // await User.save(randomUsers)
-
-    const users = await User.find({relations:['followers','following']});
-    // // // // users[2].followers = [...users.slice(3, 5)]
-    // // console.log(users[0].followers);
-
-    const updateUser = await User.findOne({
-        where:{
-            id: 2
-        },
-        relations:[
-            'followers',
-            'following'
-        ]
-    })
-
-    updateUser!.followers = [...users.slice(5,8)]
-    // updateUser!.following = [...[users[4],users[12]]]
-    // await User.save(updateUser!)
-
-    console.log(updateUser);
-    
-
-
-    // for (const user of users) {
-    //     const updateUser = await User.findOne({ where: { id: user.id }, relations: ['followers', 'following'] });
-
-    //     // const newFollowers = users.slice(0, faker.number.int({ min: 1, max: 19 })).filter(u => u.id !== user.id);
-    //     // const newFollowing = users.slice(0, faker.number.int({ min: 1, max: 19 })).filter(u => u.id !== user.id);
-    //     const newFollowers = users.slice(0, 2).filter(u => u.id !== user.id);
-    //     const newFollowing = users.slice(0, 2).filter(u => u.id !== user.id);
-    //     // console.log(newFollowers);
-
-    //     updateUser!.followers = [...newFollowers];
-    //     updateUser!.following = [...newFollowing];
-
-    //     // // Guardar los cambios en la base de datos
-    //     await User.save(updateUser!);
-    // }
-
-    // const user = await User.createQueryBuilder('user')
-    //     .leftJoinAndSelect('user.followers', 'follower')
-    //     .leftJoinAndSelect('user.following', 'following')
-    //     .where('user.id = :id', { id: 1 })
-    //     .getOne();
-
-    // console.log(user);
-
-
-
-
+    const userPromises = Array.from({ length: 17 }, generateRandomUsers)
+    const randomUsers = await Promise.all(userPromises)
+    await User.save(randomUsers)
 
     console.log('---------------------');
     console.log('Random users created!');
-    console.log('---------------------');
 
+    const users = await User.find({ relations: ['followers', 'following'] });    
+
+    for (const user of users) {
+        const updateUser = await User.findOne({
+            where: {
+                id: user.id
+            },
+            relations: [
+                'followers',
+                'following'
+            ]
+        })
+
+        updateUser!.followers = [...users.slice(0, faker.number.int({ min: 1, max: 10 }))]
+        updateUser!.following = [...users.slice(11, faker.number.int({ min: 12, max: 20 }))]
+        await User.save(updateUser!)
+    }
+
+
+    console.log('------ Users updated!');
+    console.log('---------------------');
 }
