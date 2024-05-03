@@ -11,7 +11,7 @@ import { User } from "../user/User";
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, avatar, bio, birthdate, email, password } = req.body
+        const { name, avatar, email, password } = req.body
 
         if (!name || !email || !password) {
             throw new Error('required fields')
@@ -27,12 +27,12 @@ export const register = async (req: Request, res: Response) => {
             throw new Error('invalid email')
         }
 
-        const birthdateDate = new Date(birthdate)
-        const today = new Date()
-        if (birthdateDate > today) {
-            throw new Error('future date')
-        }
-        const birthdateformated = dayjs(birthdate).format('DD/MM/YYYY')
+        // const birthdateDate = new Date(birthdate)
+        // const today = new Date()
+        // if (birthdateDate > today) {
+        //     throw new Error('future date')
+        // }
+        // const birthdateformated = dayjs(birthdate).format('DD/MM/YYYY')
 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
         if (!passwordRegex.test(password)) {
@@ -55,8 +55,8 @@ export const register = async (req: Request, res: Response) => {
         const newUser = await User.create({
             name,
             avatar,
-            bio,
-            birthdate: birthdateformated,
+            // bio,
+            // birthdate: birthdateformated,
             email,
             password: passwordEncrypted
         }).save()
@@ -83,14 +83,14 @@ export const register = async (req: Request, res: Response) => {
                     statusCode = 400
                     errorMessage = 'Invalid email!'
                     break;
-                case error.message.includes('invalid date'):
-                    statusCode = 400
-                    errorMessage = 'Invalid given birthdate!'
-                    break;
-                case error.message.includes('future date'):
-                    statusCode = 400
-                    errorMessage = 'Birthdate given is in the future!'
-                    break;
+                // case error.message.includes('invalid date'):
+                //     statusCode = 400
+                //     errorMessage = 'Invalid given birthdate!'
+                //     break;
+                // case error.message.includes('future date'):
+                //     statusCode = 400
+                //     errorMessage = 'Birthdate given is in the future!'
+                //     break;
                 case error.message.includes('invalid password'):
                     statusCode = 400
                     errorMessage = 'Passwords needs to be 6-10 longer, and have an Uppercase, a Lowercase and a number'
