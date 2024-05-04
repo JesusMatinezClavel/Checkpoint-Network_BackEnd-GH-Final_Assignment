@@ -10,7 +10,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
         if (!token) {
             return res.status(401).json({
                 success: false,
-                message: "Token doesn't exists!"
+                message: "TOKEN NOT FOUND"
             })
         }
 
@@ -19,12 +19,13 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
         if (!isTokenValid) {
             return res.status(401).json({
                 success: false,
-                message: 'Token invalid!'
+                message: 'INVALID TOKEN'
             })
         }
 
         req.tokenData = {
             userId: isTokenValid.userId,
+            userName: isTokenValid.userName,
             roleName: isTokenValid.roleName
         }
 
@@ -32,7 +33,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Fatal error!',
+            message: 'TOKEN ERROR',
             error: error
         })
     }

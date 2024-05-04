@@ -1,5 +1,6 @@
 export type TokenData = {
     userId: number;
+    userName: string;
     roleName: string;
   };
   
