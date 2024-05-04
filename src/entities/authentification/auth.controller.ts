@@ -8,7 +8,6 @@ import jwt from "jsonwebtoken";
 // Models
 import { User } from "../user/User";
 
-
 export const register = async (req: Request, res: Response) => {
     try {
         const { name, avatar, email, password } = req.body
@@ -105,7 +104,6 @@ export const register = async (req: Request, res: Response) => {
         catchStatus(res, statusCode, 'CANNOT REGISTER', new Error(errorMessage))
     }
 }
-
 export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body
