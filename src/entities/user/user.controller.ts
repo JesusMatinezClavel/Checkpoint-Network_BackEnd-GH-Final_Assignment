@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { catchStatus, tryStatus } from "../../utils/resStatus";
+
+// Models
 import { User } from "./User";
 
 

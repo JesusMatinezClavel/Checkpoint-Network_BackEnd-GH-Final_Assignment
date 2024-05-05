@@ -1,4 +1,4 @@
-import { Request, Response, response } from "express";
+import { Request, Response} from "express";
 import { catchStatus, tryStatus } from "../../utils/resStatus";
 import dayjs from "dayjs";
 import bcrypt from "bcrypt";
@@ -10,29 +10,24 @@ import { User } from "../user/User";
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, avatar, email, password } = req.body
+        let { name, avatar, email, password } = req.body
+        console.log(password);
 
+        // Validations
         if (!name || !email || !password) {
             throw new Error('required fields')
         }
-
+        if (avatar === "") {
+            avatar = 'default-ProfileImg.png'
+        }
         const validAvatar = /(\.jpg|\.jpeg|\.png|\.gif|\.bmp)$/i;
         if (avatar && !validAvatar.test(avatar)) {
             throw new Error('invalid format')
         }
-
         const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
         if (!validEmail.test(email)) {
             throw new Error('invalid email')
         }
-
-        // const birthdateDate = new Date(birthdate)
-        // const today = new Date()
-        // if (birthdateDate > today) {
-        //     throw new Error('future date')
-        // }
-        // const birthdateformated = dayjs(birthdate).format('DD/MM/YYYY')
-
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
         if (!passwordRegex.test(password)) {
             throw new Error('invalid password')
@@ -54,11 +49,11 @@ export const register = async (req: Request, res: Response) => {
         const newUser = await User.create({
             name,
             avatar,
-            // bio,
-            // birthdate: birthdateformated,
             email,
             password: passwordEncrypted
         }).save()
+
+
 
         const { password: userPassword, ...restUser } = newUser
 
@@ -82,14 +77,6 @@ export const register = async (req: Request, res: Response) => {
                     statusCode = 400
                     errorMessage = 'Invalid email!'
                     break;
-                // case error.message.includes('invalid date'):
-                //     statusCode = 400
-                //     errorMessage = 'Invalid given birthdate!'
-                //     break;
-                // case error.message.includes('future date'):
-                //     statusCode = 400
-                //     errorMessage = 'Birthdate given is in the future!'
-                //     break;
                 case error.message.includes('invalid password'):
                     statusCode = 400
                     errorMessage = 'Passwords needs to be 6-10 longer, and have an Uppercase, a Lowercase and a number'
