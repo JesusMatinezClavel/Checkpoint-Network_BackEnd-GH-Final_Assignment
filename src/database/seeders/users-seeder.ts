@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { fa, faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
 
 // Models

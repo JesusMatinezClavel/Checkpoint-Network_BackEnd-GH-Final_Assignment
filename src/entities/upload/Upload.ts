@@ -12,7 +12,7 @@ export class Upload extends BaseEntity {
     name!: string
 
     @Column()
-    path!: string
+    file!: Buffer
 
     @Column()
     description!: string

@@ -21,9 +21,9 @@ export class Uploads1714409184938 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: 'path',
-                        type: 'varchar',
-                        length: '255',
+                        name: 'file',
+                        type: 'blob',
+                        // length: '255',
                         isNullable: false
                     },
                     {

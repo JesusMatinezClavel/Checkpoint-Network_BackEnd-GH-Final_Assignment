@@ -17,7 +17,9 @@ export const getAllUploads = async (req: Request, res: Response) => {
     try {
         const uploads = await Upload.find()
 
-        tryStatus(res, 'Loggin succesful!', uploads)
+        res.setHeader('Content-Type', 'application/octet-stream')
+
+        tryStatus(res, 'Uploads succesfully called!', uploads)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'
