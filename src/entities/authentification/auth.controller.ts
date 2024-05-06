@@ -34,20 +34,25 @@ export const register = async (req: Request, res: Response) => {
 
         const passwordEncrypted = bcrypt.hashSync(password, 8)
 
-        const user = await User.findOne({
+        const userEmail = await User.findOne({
             where: {
-                name: name,
                 email: email,
             }
         })
 
-        if (user) {
+        const userName = await User.findOne({
+            where: {
+                name: name
+            }
+        })
+
+        if (userEmail || userName) {
             throw new Error('user exists')
         }
 
         const newUser = await User.create({
             name,
-            avatar,
+            avatar: `${name}-${avatar}`,
             email,
             password: passwordEncrypted
         }).save()
@@ -85,6 +90,11 @@ export const register = async (req: Request, res: Response) => {
                     break;
             }
         catchStatus(res, statusCode, 'CANNOT REGISTER', new Error(errorMessage))
+        // res.status(500).json({
+        //     success: false,
+        //     message: 'no',
+        //     error: error
+        // })
     }
 }
 export const login = async (req: Request, res: Response) => {
