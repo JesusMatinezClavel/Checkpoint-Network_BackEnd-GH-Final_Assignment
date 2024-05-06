@@ -18,7 +18,7 @@ declare global {
 declare module 'express-serve-static-core' {
   interface Request {
     body: MyRequestBodyType | null
-    file: Express.Multer.File | null // Para la carga de un solo archivo
+    file: Express.Multer.File | null
   }
 }
 

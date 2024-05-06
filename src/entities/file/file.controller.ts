@@ -4,8 +4,14 @@ import fs from "fs";
 export const registerAvatar = async (req: Request, res: Response) => {
     try {
         const newPath = `img/avatars/${req.file.originalname}`
+        if (req.file.mimetype !== ('image/png' || 'image/jpg' || 'image/jpeg' || 'image/svg')){
+            return res.status(400).json({
+                success: false,
+                message: 'Avatar format incorrect!'
+            })
+        }
 
-        fs.renameSync(req.file.path, newPath)
+            fs.renameSync(req.file.path, newPath)
         res.send({
             success: true,
             message: 'avatar uploaded correctly!',

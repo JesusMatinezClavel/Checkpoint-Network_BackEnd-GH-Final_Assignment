@@ -2,7 +2,6 @@ import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColu
 import { Role } from "../role/Role"
 import { Upload } from "../upload/Upload"
 import { UploadComment } from "../upload_comment/UploadComment"
-import { Post } from "../post/Post"
 
 @Entity('users')
 export class User extends BaseEntity {

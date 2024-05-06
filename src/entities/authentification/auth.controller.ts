@@ -1,4 +1,4 @@
-import { Request, Response} from "express";
+import { Request, Response } from "express";
 import { catchStatus, tryStatus } from "../../utils/resStatus";
 import dayjs from "dayjs";
 import bcrypt from "bcrypt";
@@ -11,9 +11,8 @@ import { User } from "../user/User";
 export const register = async (req: Request, res: Response) => {
     try {
         let { name, avatar, email, password } = req.body
-        console.log(password);
 
-        // Validations
+        // // Validations
         if (!name || !email || !password) {
             throw new Error('required fields')
         }
@@ -53,10 +52,7 @@ export const register = async (req: Request, res: Response) => {
             password: passwordEncrypted
         }).save()
 
-
-
         const { password: userPassword, ...restUser } = newUser
-
 
         tryStatus(res, 'Register succesful!', restUser)
     } catch (error) {

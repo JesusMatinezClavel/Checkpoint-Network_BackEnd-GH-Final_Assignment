@@ -24,12 +24,14 @@ export class Users1714409172948 implements MigrationInterface {
                     {
                         name: 'avatar',
                         type: 'varchar',
-                        length: '255'
+                        length: '255',
+                        isNullable: true
                     },
                     {
                         name: 'bio',
                         type: 'varchar',
-                        length: '255'
+                        length: '255',
+                        isNullable: true
                     },
                     {
                         name: 'email',
@@ -42,10 +44,12 @@ export class Users1714409172948 implements MigrationInterface {
                         name: 'password',
                         type: 'varchar',
                         length: '255',
+                        isNullable: false
                     },
                     {
                         name: 'birthdate',
                         type: 'timestamp',
+                        isNullable: true
                     },
                     {
                         name: 'isActive',
