@@ -9,7 +9,7 @@ export const seedControlUploads = async () => {
     for (const user of users) {
 
         const cube = new Upload()
-        cube.name = `${user.name} - cube`
+        cube.name = `${user.name}-cube.fbx`
         cube.path = '../../../3D-models/Seeders/cube.fbx'
         cube.description = 'basic cube with beveled vertices'
         cube.user = {

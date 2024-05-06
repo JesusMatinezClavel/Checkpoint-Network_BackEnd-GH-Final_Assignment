@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 // Function to throw a Response in the Catch
-export const catchStatus = (res: Response, statusCode: number, message: string, error: any) => {
+export const catchStatus = (res: Response, statusCode: number, message: string, error: Error) => {
     res.status(statusCode).json({
         success: false,
         message: message,

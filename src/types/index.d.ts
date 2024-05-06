@@ -28,3 +28,12 @@ interface MyRequestBodyType {
   password: string | null
   birthdate: Date | null
 }
+
+declare function BlobStream(): BlobStream.IBlobStream;
+
+declare namespace BlobStream {
+    interface IBlobStream extends NodeJS.WritableStream {
+        toBlob(type?: string): Blob;
+        toBlobURL(type?: string): string;
+    }
+}
