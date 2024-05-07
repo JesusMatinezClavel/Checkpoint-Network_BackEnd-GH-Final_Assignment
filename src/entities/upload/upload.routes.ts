@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { getAllUploadFiles, getAllUploads,  } from "../upload/upload.controller";
+import { getAllUploads, getUploadFile,  } from "../upload/upload.controller";
 
 const router = Router()
 
 router.get('/all', getAllUploads)
+router.get('/download/:id',getUploadFile)
 
 
 export default router
