@@ -15,7 +15,7 @@ const __filePath = path.dirname(__fileName)
 
 export const getAllUploads = async (req: Request, res: Response) => {
     try {
-        const uploads = await Upload.find({ relations: ["liked"] })
+        const uploads = await Upload.find({ relations: ["liked", "uploadComments","posts","user"] })
 
 
         console.log(uploads);
