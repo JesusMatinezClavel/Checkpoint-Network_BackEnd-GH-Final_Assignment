@@ -15,7 +15,11 @@ const __filePath = path.dirname(__fileName)
 
 export const getAllUploads = async (req: Request, res: Response) => {
     try {
-        const uploads = await Upload.find()
+        const uploads = await Upload.find({ relations: ["liked"] })
+
+
+        console.log(uploads);
+
 
         // res.setHeader('Content-Type', 'application/octet-stream')
 
@@ -106,11 +110,11 @@ export const getUploadFile = async (req: Request, res: Response) => {
         if (!upload) {
             return res.status(404).send('Upload not found');
         }
-        
-        
+
+
         const absolutePath = path.resolve(cubePath)
 
-        const filePath =  absolutePath + upload.file;
+        const filePath = absolutePath + upload.file;
 
 
         res.sendFile(absolutePath);
