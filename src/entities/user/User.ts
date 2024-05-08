@@ -2,6 +2,7 @@ import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColu
 import { Role } from "../role/Role"
 import { Upload } from "../upload/Upload"
 import { UploadComment } from "../upload_comment/UploadComment"
+import { PostComment } from "../post_comment/PostComment"
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -45,6 +46,9 @@ export class User extends BaseEntity {
     @OneToMany(() => UploadComment, (uploadComment) => uploadComment.author)
     uploadComments!: UploadComment[]
 
+    @OneToMany(() => PostComment, (postComment) => postComment.author)
+    postComments!: PostComment[]
+    
     @ManyToMany(() => User, (user) => user.following)
     @JoinTable({
         name: 'followers',

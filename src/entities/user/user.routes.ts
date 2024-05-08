@@ -2,7 +2,7 @@ import { Router } from "express";
 
 // Middlewares
 import { auth } from "../../middlewares/auth-middleware";
-import { getProfile } from "./user.controller";
+import { getOwnProfile, getProfile } from "./user.controller";
 
 // Controllers
 
@@ -11,7 +11,7 @@ import { getProfile } from "./user.controller";
 const router = Router()
 
 router.get('/profile/:id', auth, getProfile)
-router.get('/profile/', auth, getProfile)
+router.get('/profile/', auth, getOwnProfile)
 
 
 export default router

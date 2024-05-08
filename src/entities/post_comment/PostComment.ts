@@ -20,7 +20,7 @@ export class PostComment extends BaseEntity {
     @JoinColumn({ name: 'post_id' })
     post!: Post
 
-    @ManyToOne(() => User, (user) => user.uploadComments)
+    @ManyToOne(() => User, (user) => user.postComments)
     @JoinColumn({ name: 'author_id' })
     author!: User
 }
