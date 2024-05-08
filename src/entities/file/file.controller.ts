@@ -35,10 +35,15 @@ export const registerAvatar = async (req: Request, res: Response) => {
 export const getAvatar = async(req:Request, res:Response)=>{
     try {
         const fileName = req.params.fileName
+        if(!fileName){
+            return res.status(400).json({
+                success:false,
+                message:'Invalid file name!'
+            })
+        }
         const filePath = path.join(__dirname,'../../../','img/avatars',fileName)
-
         if(!fs.existsSync(filePath)){
-            return res.status(401).json({
+            return res.status(404).json({
                 success: false,
                 message: "File doesn't exist!"
             })

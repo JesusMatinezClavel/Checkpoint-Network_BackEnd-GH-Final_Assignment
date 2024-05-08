@@ -11,7 +11,7 @@ export const catchStatus = (res: Response, statusCode: number, message: string, 
 
 
 // Function to throw a Response in the Try
-export const tryStatus = (res: Response, message: string, result: object) => {
+export const tryStatus = (res: Response, message: string, result: object | null) => {
     res.status(200).json({
         success: true,
         message: message,
