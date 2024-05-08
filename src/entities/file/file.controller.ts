@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import { Upload } from "../upload/Upload";
+import { tryStatus } from "../../utils/resStatus";
 
 const __fileName = __filename
 const __filePath = path.dirname(__fileName)
@@ -26,6 +27,29 @@ export const registerAvatar = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: 'CANNOT UPLOAD AVATAR',
+            error: error
+        })
+    }
+}
+
+export const getAvatar = async(req:Request, res:Response)=>{
+    try {
+        const fileName = req.params.fileName
+        const filePath = path.join(__dirname,'../../../','img/avatars',fileName)
+
+        if(!fs.existsSync(filePath)){
+            return res.status(401).json({
+                success: false,
+                message: "File doesn't exist!"
+            })
+        }
+
+        const fileStream = fs.createReadStream(filePath)
+        fileStream.pipe(res)
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message: 'unkown problem...',
             error: error
         })
     }
