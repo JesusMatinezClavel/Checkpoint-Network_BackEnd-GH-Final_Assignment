@@ -10,7 +10,7 @@ const router = Router()
 const uploadAvatar = multer({ dest: 'img/avatars' })
 
 router.post('/avatar', uploadAvatar.single('avatar'), registerAvatar)
-router.get('/avatar/:filename', auth, getAvatar)
+router.get('/avatar/:id', auth, getAvatar)
 
 
 export default router

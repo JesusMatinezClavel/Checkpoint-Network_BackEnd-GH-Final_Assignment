@@ -16,9 +16,6 @@ export const register = async (req: Request, res: Response) => {
         if (!name || !email || !password) {
             throw new Error('required fields')
         }
-        if (avatar === "") {
-            avatar = 'default-ProfileImg.png'
-        }
         const validAvatar = /(\.jpg|\.jpeg|\.png|\.gif|\.bmp)$/i;
         if (avatar && !validAvatar.test(avatar)) {
             throw new Error('invalid format')

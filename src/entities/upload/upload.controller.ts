@@ -41,67 +41,7 @@ export const getAllUploads = async (req: Request, res: Response) => {
     }
 }
 
-// export const getAllUploadFiles = async (req: Request, res: Response) => {
-//     try {
-//         const streamToBlob = (stream: fs.ReadStream): Promise<Buffer> => {
-//             return new Promise((resolve, reject) => {
-//                 const chunks: Buffer[] = []
-//                 stream.on('data', (chunk) => {
-//                     if (Buffer.isBuffer(chunk)) {
-//                         chunks.push(chunk);
-//                     } else {
-//                         reject(new TypeError("Chunk is not a Buffer"));
-//                     }
-//                 })
-//                 stream.on('end', () => resolve(Buffer.concat(chunks)))
-//                 stream.on('error', reject)
-//             })
-//         }
-//         const uploads = await Upload.find()
-//         const files: Buffer[] = []
-
-//         for (const upload of uploads) {
-//             const fileId = upload.id
-//             const file = await Upload.findOne({
-//                 where: {
-//                     id: fileId
-//                 }
-//             })
-//             if (!file) {
-//                 throw new Error('invalid file')
-//             }
-//             const filePath = path.join(__dirname, '../../../', '3D-Models/seeders', `${upload!.name.split("-")[1]}`)
-//             if (!fs.existsSync(filePath)) {
-//                 return res.status(400).json({
-//                     success: false,
-//                     message: "File not found"
-//                 })
-//             }
-//             const fileStream = fs.createReadStream(filePath)
-//             files.push(await streamToBlob(fileStream))
-//         }
-
-
-//         tryStatus(res, 'Loggin succesful!', files)
-//     } catch (error) {
-//         let statusCode: number = 500
-//         let errorMessage: string = 'Unkown error ocurred...'
-
-//         if (error instanceof Error)
-//             switch (true) {
-//                 case error.message.includes('invalid file'):
-//                     statusCode = 404
-//                     errorMessage = 'Invalid type of file!'
-//                     break;
-//                 default:
-//                     break;
-//             }
-//         catchStatus(res, statusCode, 'CANNOT GET UPLOAD', new Error(errorMessage))
-//     }
-// }
-
 const cubePath = 'D:/GeeksHub/Trabajos/GeeksHub_FinalAssignment_Chekpoint-Network/Checkpoint_Backend/3D-Models/Seeders/cube.fbx'
-
 
 export const getUploadFile = async (req: Request, res: Response) => {
     try {
@@ -113,9 +53,6 @@ export const getUploadFile = async (req: Request, res: Response) => {
 
 
         const absolutePath = path.resolve(cubePath)
-
-        const filePath = absolutePath + upload.file;
-
 
         res.sendFile(absolutePath);
     } catch (error) {
