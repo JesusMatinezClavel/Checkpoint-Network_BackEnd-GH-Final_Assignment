@@ -87,11 +87,6 @@ export const register = async (req: Request, res: Response) => {
                     break;
             }
         catchStatus(res, statusCode, 'CANNOT REGISTER', new Error(errorMessage))
-        // res.status(500).json({
-        //     success: false,
-        //     message: 'no',
-        //     error: error
-        // })
     }
 }
 export const login = async (req: Request, res: Response) => {

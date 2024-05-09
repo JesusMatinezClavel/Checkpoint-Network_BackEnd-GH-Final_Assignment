@@ -2,7 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 
 // Controllers
-import { getAvatar, registerAvatar } from "./file.controller";
+import { getAvatar, getUploadFile, registerAvatar, registerUpload } from "./file.controller";
 import { auth } from "../../middlewares/auth-middleware";
 
 // Instances
@@ -10,7 +10,9 @@ const router = Router()
 const uploadAvatar = multer({ dest: 'img/avatars' })
 
 router.post('/avatar', uploadAvatar.single('avatar'), registerAvatar)
+router.post('/upload', auth, registerUpload)
 router.get('/avatar/:id', auth, getAvatar)
+router.get('/download/:id', getUploadFile)
 
 
 export default router

@@ -2,19 +2,24 @@
 import { User } from "../../entities/user/User";
 import { Upload } from "../../entities/upload/Upload";
 import fs from "fs";
+import path from "path";
+
+const __fileName = __filename
+const __filePath = path.dirname(__fileName)
 
 export const seedControlUploads = async () => {
 
     const users = await User.find()
 
     for (const user of users) {
-        const cubePath = 'D:/GeeksHub/Trabajos/GeeksHub_FinalAssignment_Chekpoint-Network/Checkpoint_Backend/3D-Models/Seeders/cube.fbx'
 
-        const cube = new Upload()
-        cube.name = `${user.name}-cube.fbx`
+        const filePath = path.join(__dirname, '../../../', '3D-Models/Seeders', `cube.fbx`)
+
+        // const cube = new Upload()
+        // cube.name = `${user.name}-cube.fbx`
         // const fileBuffer = fs.readFileSync(cubePath)
 
-        fs.readFile(cubePath, async (err: NodeJS.ErrnoException | null, fileBuffer: Buffer) => {
+        fs.readFile(filePath, async (err: NodeJS.ErrnoException | null, fileBuffer: Buffer) => {
             if (err) {
                 console.error('Error reading the file:', err);
                 return;

@@ -15,13 +15,7 @@ const __filePath = path.dirname(__fileName)
 
 export const getAllUploads = async (req: Request, res: Response) => {
     try {
-        const uploads = await Upload.find({ relations: ["liked", "uploadComments","posts","user"] })
-
-
-        console.log(uploads);
-
-
-        // res.setHeader('Content-Type', 'application/octet-stream')
+        const uploads = await Upload.find({ relations: ["liked", "uploadComments", "posts", "user"] })
 
         tryStatus(res, 'Uploads succesfully called!', uploads)
     } catch (error) {
@@ -41,23 +35,54 @@ export const getAllUploads = async (req: Request, res: Response) => {
     }
 }
 
-const cubePath = 'D:/GeeksHub/Trabajos/GeeksHub_FinalAssignment_Chekpoint-Network/Checkpoint_Backend/3D-Models/Seeders/cube.fbx'
-
-export const getUploadFile = async (req: Request, res: Response) => {
+export const createUpload = async (req: Request, res: Response) => {
     try {
-        const uploadId = Number(req.params.id)
-        const upload = await Upload.findOne({ where: { id: uploadId } });
-        if (!upload) {
-            return res.status(404).send('Upload not found');
+        // const saveFile = (buffer: Buffer, filename: string) => {
+        //     const filePath = path.join(__dirname, 'uploads', filename);
+        //     fs.writeFile(filePath, buffer, (err) => {
+        //         if (err) {
+        //             throw new Error('Error saving file');
+        //         }
+        //         console.log('File saved successfully');
+        //     });
+        // };
+
+        const { name, description, downloadable, file } = req.body
+
+        if (!name || !file) {
+            throw new Error('required fields')
         }
 
+        if (!Buffer.isBuffer(file)) {
+            throw new Error('invalid file');
+        }
 
-        const absolutePath = path.resolve(cubePath)
+        const newUpload = await Upload.create({
+            name: name,
+            description: description,
+            downloadable: downloadable,
+            file: file
+        })
 
-        res.sendFile(absolutePath);
+
+        tryStatus(res, 'New upload created!', newUpload)
     } catch (error) {
-        res.status(500).send('Error retrieving the file: ' + error);
+        let statusCode: number = 500
+        let errorMessage: string = 'Unkown error ocurred...'
+
+        if (error instanceof Error)
+            switch (true) {
+                case error.message.includes('required fields'):
+                    statusCode = 402
+                    errorMessage = 'You need a 3D model and a name for it!'
+                    break;
+                case error.message.includes('invalid file'):
+                    statusCode = 402
+                    errorMessage = 'You need valid file!'
+                    break;
+                default:
+                    break;
+            }
+        catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
     }
-};
-
-
+}
