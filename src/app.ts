@@ -3,15 +3,13 @@ import { Request, Response } from "express";
 import cors from "cors";
 import router from "./router";
 
+const BodyParser = require('body-parser')
+
 export const app: Application = express()
 
+app.use(BodyParser.json({ limit: '300mb' }))
+app.use(BodyParser.urlencoded({ limit: '300mb', extended: true }))
 app.use(express.json())
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "http://localhost:4000/api");
-//     res.header("Access-Control-Allow-Methods", "GET, POST");
-//     res.header("Access-Control-Allow-Headers", "Content-Type");
-//     next();
-// });
 
 app.use(cors())
 

@@ -37,15 +37,6 @@ export const getAllUploads = async (req: Request, res: Response) => {
 
 export const createUpload = async (req: Request, res: Response) => {
     try {
-        // const saveFile = (buffer: Buffer, filename: string) => {
-        //     const filePath = path.join(__dirname, 'uploads', filename);
-        //     fs.writeFile(filePath, buffer, (err) => {
-        //         if (err) {
-        //             throw new Error('Error saving file');
-        //         }
-        //         console.log('File saved successfully');
-        //     });
-        // };
 
         const { name, description, downloadable, file } = req.body
 
@@ -61,7 +52,7 @@ export const createUpload = async (req: Request, res: Response) => {
             name: name,
             description: description,
             downloadable: downloadable,
-            file: file
+            // file: file
         })
 
 
@@ -73,7 +64,7 @@ export const createUpload = async (req: Request, res: Response) => {
         if (error instanceof Error)
             switch (true) {
                 case error.message.includes('required fields'):
-                    statusCode = 402
+                    statusCode = 410
                     errorMessage = 'You need a 3D model and a name for it!'
                     break;
                 case error.message.includes('invalid file'):
@@ -83,6 +74,6 @@ export const createUpload = async (req: Request, res: Response) => {
                 default:
                     break;
             }
-        catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
+        catchStatus(res, statusCode, 'CANNOT CREATE UPLOAD', new Error(errorMessage))
     }
 }

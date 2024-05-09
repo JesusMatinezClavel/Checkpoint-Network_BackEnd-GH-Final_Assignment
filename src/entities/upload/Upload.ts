@@ -11,8 +11,8 @@ export class Upload extends BaseEntity {
     @Column()
     name!: string
 
-    @Column()
-    file!: Buffer
+    // @Column()
+    // file!: Buffer
 
     @Column()
     description!: string

@@ -8,7 +8,7 @@ import { auth } from "../../middlewares/auth-middleware";
 // Instances
 const router = Router()
 const uploadAvatar = multer({ dest: 'img/avatars' })
-const uploadModel = multer({ dest: '3D-models' })
+const uploadModel = multer({ dest: '3D-models/' })
 
 router.post('/avatar', uploadAvatar.single('avatar'), registerAvatar)
 router.post('/upload', uploadModel.single('uploadFile'), auth, registerUpload)

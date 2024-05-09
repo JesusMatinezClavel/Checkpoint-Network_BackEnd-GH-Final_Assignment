@@ -10,8 +10,6 @@ const __filePath = path.dirname(__fileName)
 
 export const registerAvatar = async (req: Request, res: Response) => {
     try {
-        console.log(req.body);
-
         if (!req.file) {
             return res.status(200).json({
                 success: true,
@@ -79,7 +77,8 @@ export const getUploadFile = async (req: Request, res: Response) => {
         const file = await Upload.findOne({
             where: {
                 id: fileId
-            }
+            },
+            relations: ['user']
         })
 
         if (!file) {
@@ -88,7 +87,11 @@ export const getUploadFile = async (req: Request, res: Response) => {
                 message: 'File does not exist'
             })
         }
-        const filePath = path.join(__dirname, '../../../', '3D-Models/Seeders', `${file!.name.split("-")[1]}`)
+
+        const user = file?.user
+        console.log(user);
+
+        const filePath = path.join(__dirname, '../../../', `3D-Models/${user?.name}`, `${file!.name}`)
 
         if (!fs.existsSync(filePath)) {
             return res.status(400).json({
@@ -107,29 +110,13 @@ export const getUploadFile = async (req: Request, res: Response) => {
     }
 }
 
-// export const getUploadFile = async (req: Request, res: Response) => {
-//     try {
-//         const uploadId = Number(req.params.id)
-//         const upload = await Upload.findOne({ where: { id: uploadId } });
-//         if (!upload) {
-//             return res.status(404).send('Upload not found');
-//         }
-
-//         const filePath = `D:/GeeksHub/Trabajos/GeeksHub_FinalAssignment_Chekpoint-Network/Checkpoint_Backend/3D-Models/Seeders/${upload.name.split("-")[1]}`
-
-//         const absolutePath = path.resolve(filePath)
-
-//         res.sendFile(absolutePath);
-//     } catch (error) {
-//         res.status(500).send('Error retrieving the file: ' + error);
-//     }
-// };
-
 export const registerUpload = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
+
         if (!req.file) {
             return res.status(400).json({
-                success: true,
+                success: false,
                 message: 'No file selected'
             });
         }
@@ -158,8 +145,6 @@ export const registerUpload = async (req: Request, res: Response) => {
         if (!fs.existsSync(userFolder)) {
             fs.mkdirSync(userFolder), { recursive: true }
         }
-
-
 
         const newPath = `${userFolder}/${req.file.originalname}`
         fs.renameSync(req.file.path, newPath)
