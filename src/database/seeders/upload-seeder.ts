@@ -13,10 +13,15 @@ export const seedControlUploads = async () => {
 
     for (const user of users) {
 
+        const cubePath = path.join(__dirname, '../../../3D-Models/cube.fbx');
+
         const userFolder = path.join(__dirname, '../../../', '3D-Models', user.name)
         if (!fs.existsSync(userFolder)) {
             fs.mkdirSync(userFolder, { recursive: true })
         }
+
+        const destinationPath = path.join(userFolder, 'cube.fbx');
+        fs.copyFileSync(cubePath, destinationPath);
 
         const cube = new Upload();
         cube.name = `cube.fbx`;

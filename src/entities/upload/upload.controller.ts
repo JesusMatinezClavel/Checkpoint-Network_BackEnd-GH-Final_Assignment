@@ -46,7 +46,7 @@ export const createUpload = async (req: Request, res: Response) => {
         }
 
         const newUpload = await Upload.create({
-            name: `${name}.fbx`,
+            name: name,
             description: description,
             downloadable: downloadable,
             user: {

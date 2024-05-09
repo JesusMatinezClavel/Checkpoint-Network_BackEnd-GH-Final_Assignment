@@ -39,7 +39,6 @@ export const registerAvatar = async (req: Request, res: Response) => {
         })
     }
 }
-
 export const getAvatar = async (req: Request, res: Response) => {
     try {
         const fileName = req.params.id
@@ -69,16 +68,15 @@ export const getAvatar = async (req: Request, res: Response) => {
         })
     }
 }
-
 export const getUploadFile = async (req: Request, res: Response) => {
     try {
-        const fileId = Number(req.params.id)
+        const fileId = Number(req.params.id)        
         const file = await Upload.findOne({
             where: {
                 id: fileId
             },
             relations: ['user']
-        })
+        })      
 
         if (!file) {
             res.status(401).json({
@@ -89,7 +87,7 @@ export const getUploadFile = async (req: Request, res: Response) => {
 
         const user = file?.user
 
-        const filePath = path.join(__dirname, '../../../', `3D-Models/${user?.name}`, `${file!.name}`)
+        const filePath = path.join(__dirname, '../../../', `3D-Models/${user?.name}`, `${file!.name}`)       
 
         if (!fs.existsSync(filePath)) {
             return res.status(400).json({

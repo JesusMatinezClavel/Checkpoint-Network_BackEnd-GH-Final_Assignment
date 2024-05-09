@@ -58,19 +58,31 @@ export const seedControlUsers = async () => {
 
 }
 const generateRandomUsers = async () => {
-    const randomUser = new User()
-    const name = randomUser.name = faker.person.firstName()
-    randomUser.avatar = faker.image.avatar()
-    randomUser.bio = faker.lorem.sentence()
-    randomUser.email = faker.internet.email({ firstName: name, provider: 'email.com' })
-    randomUser.password = bcrypt.hashSync(faker.internet.password({ length: 8, memorable: true }) + faker.number.int({ min: 0, max: 9 }), 8)
-    randomUser.birthdate = faker.date.between({ from: '1990-01-01T00:00:00.000Z', to: '2012-12-31T00:00:00.000>' })
-    randomUser.createdAt = new Date()
-    randomUser.updatedAt = new Date()
+    let unique = false;
+    let name;
+    let randomUser = new User();
 
-    return randomUser
+    while (!unique) {
+        name = faker.person.firstName();
+        const existingUser = await User.findOne({ where: { name: name } });
+        !existingUser
+            ? (
+                unique = true,
+                randomUser.name = name,
+                randomUser.avatar = faker.image.avatar(),
+                randomUser.bio = faker.lorem.sentence(),
+                randomUser.email = faker.internet.email({ firstName: name, provider: 'email.com' }),
+                randomUser.password = bcrypt.hashSync(faker.internet.password({ length: 8, memorable: true }) + faker.number.int({ min: 0, max: 9 }), 8),
+                randomUser.birthdate = faker.date.between({ from: '1990-01-01T00:00:00.000Z', to: '2012-12-31T00:00:00.000>' }),
+                randomUser.createdAt = new Date(),
+                randomUser.updatedAt = new Date()
+            )
+            : generateRandomUsers()
+    }
 
+    return randomUser;
 }
+
 export const seedRandomUsers = async () => {
 
     const userPromises = Array.from({ length: 17 }, generateRandomUsers)
@@ -80,7 +92,7 @@ export const seedRandomUsers = async () => {
     console.log('---------------------');
     console.log('Random users created!');
 
-    const users = await User.find({ relations: ['followers', 'following'] });    
+    const users = await User.find({ relations: ['followers', 'following'] });
 
     for (const user of users) {
         const updateUser = await User.findOne({
@@ -93,8 +105,31 @@ export const seedRandomUsers = async () => {
             ]
         })
 
-        updateUser!.followers = [...users.slice(0, faker.number.int({ min: 1, max: 10 }))]
-        updateUser!.following = [...users.slice(11, faker.number.int({ min: 12, max: 20 }))]
+        const followers = [...users.slice(0, faker.number.int({ min: 1, max: 10 }))]
+        const following = [...users.slice(11, faker.number.int({ min: 12, max: 20 }))]
+
+        updateUser!.followers = followers
+        updateUser!.following = following
+
+        for (const follower of followers) {
+            const followerUser = await User.findOne({
+                where: { id: follower.id },
+                relations: ['following']
+            });
+            followerUser!.following = [...followerUser!.following, updateUser!];
+            await User.save(followerUser!);
+        }
+
+        for (const followed of following) {
+            const followedUser = await User.findOne({
+                where: { id: followed.id },
+                relations: ['followers']
+            });
+            followedUser!.followers = [...followedUser!.followers, updateUser!];
+            await User.save(followedUser!);
+        }
+
+
         await User.save(updateUser!)
     }
 
