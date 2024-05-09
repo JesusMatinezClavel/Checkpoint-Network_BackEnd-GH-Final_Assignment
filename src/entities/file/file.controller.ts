@@ -51,7 +51,6 @@ export const getAvatar = async (req: Request, res: Response) => {
             })
         }
         const filePath = path.join(__dirname, '../../../', 'img/avatars', fileName)
-        console.log(filePath);
 
         if (!fs.existsSync(filePath)) {
             return res.status(404).json({
@@ -89,7 +88,6 @@ export const getUploadFile = async (req: Request, res: Response) => {
         }
 
         const user = file?.user
-        console.log(user);
 
         const filePath = path.join(__dirname, '../../../', `3D-Models/${user?.name}`, `${file!.name}`)
 
@@ -112,8 +110,6 @@ export const getUploadFile = async (req: Request, res: Response) => {
 
 export const registerUpload = async (req: Request, res: Response) => {
     try {
-        console.log(req.body);
-
         if (!req.file) {
             return res.status(400).json({
                 success: false,

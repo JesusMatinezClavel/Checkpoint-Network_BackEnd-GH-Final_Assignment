@@ -38,22 +38,21 @@ export const getAllUploads = async (req: Request, res: Response) => {
 export const createUpload = async (req: Request, res: Response) => {
     try {
 
-        const { name, description, downloadable, file } = req.body
+        const { name, description, downloadable } = req.body
+        const userId = req.tokenData.userId
 
-        if (!name || !file) {
+        if (!name) {
             throw new Error('required fields')
         }
 
-        if (!Buffer.isBuffer(file)) {
-            throw new Error('invalid file');
-        }
-
         const newUpload = await Upload.create({
-            name: name,
+            name: `${name}.fbx`,
             description: description,
             downloadable: downloadable,
-            // file: file
-        })
+            user: {
+                id: userId
+            }
+        }).save()
 
 
         tryStatus(res, 'New upload created!', newUpload)

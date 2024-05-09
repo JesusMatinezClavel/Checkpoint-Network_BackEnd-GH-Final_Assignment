@@ -20,12 +20,6 @@ export class Uploads1714409184938 implements MigrationInterface {
                         length: '255',
                         isNullable: false
                     },
-                    // {
-                    //     name: 'file',
-                    //     type: 'blob',
-                    //     // length: '255',
-                    //     isNullable: false
-                    // },
                     {
                         name: 'description',
                         type: 'varchar',
@@ -50,11 +44,7 @@ export class Uploads1714409184938 implements MigrationInterface {
                     {
                         name: 'author',
                         type: 'int'
-                    },
-                    // {
-                    //     name: 'likes',
-                    //     type: 'int'
-                    // }
+                    }
                 ],
                 foreignKeys: [
                     {
@@ -62,13 +52,7 @@ export class Uploads1714409184938 implements MigrationInterface {
                         referencedTableName: 'users',
                         referencedColumnNames: ['id'],
                         onDelete: 'CASCADE'
-                    },
-                    // {
-                    //     columnNames: ['likes'],
-                    //     referencedTableName: 'users',
-                    //     referencedColumnNames: ['id'],
-                    //     onDelete: 'CASCADE'
-                    // },
+                    }
                 ]
             })
         )
