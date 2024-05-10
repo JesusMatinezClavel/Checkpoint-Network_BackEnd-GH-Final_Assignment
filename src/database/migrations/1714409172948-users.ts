@@ -47,11 +47,6 @@ export class Users1714409172948 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: 'birthdate',
-                        type: 'timestamp',
-                        isNullable: true
-                    },
-                    {
                         name: 'isActive',
                         type: 'boolean',
                         default: false

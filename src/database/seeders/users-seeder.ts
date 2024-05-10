@@ -13,7 +13,6 @@ export const seedControlUsers = async () => {
     controlUser.bio = faker.lorem.sentence()
     controlUser.email = 'user@email.com'
     controlUser.password = bcrypt.hashSync('Aa123456', 8)
-    controlUser.birthdate = new Date('1992-06-04')
     controlUser.isActive = false
     controlUser.role = {
         id: 1
@@ -28,7 +27,6 @@ export const seedControlUsers = async () => {
     controlAdmin.bio = faker.lorem.sentence()
     controlAdmin.email = 'admin@email.com'
     controlAdmin.password = bcrypt.hashSync('Aa123456', 8)
-    controlAdmin.birthdate = new Date('1992-06-04')
     controlAdmin.isActive = false
     controlAdmin.role = {
         id: 2
@@ -43,7 +41,6 @@ export const seedControlUsers = async () => {
     controlSuper.bio = faker.lorem.sentence()
     controlSuper.email = 'superadmin@email.com'
     controlSuper.password = bcrypt.hashSync('Aa123456', 8)
-    controlSuper.birthdate = new Date('1992-06-04')
     controlSuper.isActive = false
     controlSuper.role = {
         id: 3
@@ -73,7 +70,6 @@ const generateRandomUsers = async () => {
                 randomUser.bio = faker.lorem.sentence(),
                 randomUser.email = faker.internet.email({ firstName: name, provider: 'email.com' }),
                 randomUser.password = bcrypt.hashSync(faker.internet.password({ length: 8, memorable: true }) + faker.number.int({ min: 0, max: 9 }), 8),
-                randomUser.birthdate = faker.date.between({ from: '1990-01-01T00:00:00.000Z', to: '2012-12-31T00:00:00.000>' }),
                 randomUser.createdAt = new Date(),
                 randomUser.updatedAt = new Date()
             )
