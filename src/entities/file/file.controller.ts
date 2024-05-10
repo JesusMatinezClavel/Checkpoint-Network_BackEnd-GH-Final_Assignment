@@ -106,7 +106,6 @@ export const getUploadFile = async (req: Request, res: Response) => {
         })
     }
 }
-
 export const registerUpload = async (req: Request, res: Response) => {
     try {
         if (!req.file) {

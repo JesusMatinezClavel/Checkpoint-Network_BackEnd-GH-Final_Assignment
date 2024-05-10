@@ -10,7 +10,7 @@ export const seedControlUsers = async () => {
     const controlUser = new User()
     controlUser.name = 'user'
     controlUser.avatar = faker.image.avatar()
-    controlUser.bio = faker.lorem.sentence()
+    controlUser.bio = faker.person.bio()
     controlUser.email = 'user@email.com'
     controlUser.password = bcrypt.hashSync('Aa123456', 8)
     controlUser.isActive = false
@@ -24,7 +24,7 @@ export const seedControlUsers = async () => {
     const controlAdmin = new User()
     controlAdmin.name = 'admin'
     controlAdmin.avatar = faker.image.avatar()
-    controlAdmin.bio = faker.lorem.sentence()
+    controlAdmin.bio = faker.person.bio()
     controlAdmin.email = 'admin@email.com'
     controlAdmin.password = bcrypt.hashSync('Aa123456', 8)
     controlAdmin.isActive = false
@@ -38,7 +38,7 @@ export const seedControlUsers = async () => {
     const controlSuper = new User()
     controlSuper.name = 'superadmin'
     controlSuper.avatar = faker.image.avatar()
-    controlSuper.bio = faker.lorem.sentence()
+    controlSuper.bio = faker.person.bio()
     controlSuper.email = 'superadmin@email.com'
     controlSuper.password = bcrypt.hashSync('Aa123456', 8)
     controlSuper.isActive = false
@@ -67,7 +67,7 @@ const generateRandomUsers = async () => {
                 unique = true,
                 randomUser.name = name,
                 randomUser.avatar = faker.image.avatar(),
-                randomUser.bio = faker.lorem.sentence(),
+                randomUser.bio = faker.person.bio(),
                 randomUser.email = faker.internet.email({ firstName: name, provider: 'email.com' }),
                 randomUser.password = bcrypt.hashSync(faker.internet.password({ length: 8, memorable: true }) + faker.number.int({ min: 0, max: 9 }), 8),
                 randomUser.createdAt = new Date(),
