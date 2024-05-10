@@ -87,7 +87,7 @@ export const createUpload = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUpload = async (req: Request, res: Response) => {
+export const deleteOwnUpload = async (req: Request, res: Response) => {
     try {
         const userId = req.tokenData.userId
         const uploadId = Number(req.params.id)
