@@ -57,7 +57,9 @@ export const getOwnProfile = async (req: Request, res: Response) => {
             throw new Error('user doesnt exists')
         }
 
-        tryStatus(res, 'Own profile called succesfully', user!)
+        const { password, ...restUser } = user
+
+        tryStatus(res, 'Own profile called succesfully', restUser)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'
@@ -133,16 +135,18 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
             throw new Error('invalid userEmail')
         }
 
+
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
         if (password === "") {
             password = user.password
-        } else if (!passwordRegex.test(password)) {
-            throw new Error('invalid password')
-        } else if (!confirmPassword || password !== confirmPassword) {
-            throw new Error('invalid confirm password')
+        } else {
+            if (!passwordRegex.test(password)) {
+                throw new Error('invalid password')
+            } else if (!confirmPassword || password !== confirmPassword) {
+                throw new Error('invalid confirm password')
+            }
+            bcrypt.hashSync(password, 8)
         }
-
-        const passwordHash = bcrypt.hashSync(password, 8)
 
         await User.update(
             {
@@ -153,7 +157,7 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
                 bio: bio,
                 avatar: avatar,
                 email: email,
-                password: passwordHash
+                password: password
             }
         )
 
@@ -163,7 +167,14 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
             }
         })
 
-        tryStatus(res, 'Own profile updated succesfully', updatedUser)
+        const restUser = {
+            name: updatedUser?.name,
+            bio: updatedUser?.bio,
+            avatar: updatedUser?.avatar,
+            email: updatedUser?.email
+        }
+
+        tryStatus(res, 'Own profile updated succesfully', restUser)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'

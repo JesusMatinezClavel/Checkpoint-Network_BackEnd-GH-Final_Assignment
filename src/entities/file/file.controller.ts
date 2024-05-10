@@ -40,7 +40,7 @@ export const registerAvatar = async (req: Request, res: Response) => {
     }
 }
 export const getAvatar = async (req: Request, res: Response) => {
-    try {
+    try {       
         const fileName = req.params.id
 
         if (!fileName) {
@@ -58,7 +58,7 @@ export const getAvatar = async (req: Request, res: Response) => {
             })
         }
 
-        const fileStream = fs.createReadStream(filePath)
+        const fileStream = fs.createReadStream(filePath)       
         fileStream.pipe(res)
     } catch (error) {
         res.status(500).json({
