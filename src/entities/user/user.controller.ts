@@ -215,3 +215,61 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
         catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
     }
 }
+
+export const deleteOwnUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.tokenData.userId
+
+        const user = await User.findOne({
+            where: {
+                id: userId
+            }
+        })
+
+        if (!user) {
+            throw new Error('user doesnt exists')
+        }
+
+        await User.delete(userId)
+
+        tryStatus(res, 'User deleted', null)
+    } catch (error) {
+        let statusCode: number = 500
+        let errorMessage: string = 'Unkown error ocurred...'
+
+        if (error instanceof Error)
+            switch (true) {
+                case error.message.includes('user doesnt exists'):
+                    statusCode = 409
+                    errorMessage = "User doesn't exists"
+                    break;
+                case error.message.includes('invalid format'):
+                    statusCode = 422
+                    errorMessage = 'Invalid format for the selected avatar!'
+                    break;
+                case error.message.includes('invalid userName'):
+                    statusCode = 400
+                    errorMessage = 'Name already in use!'
+                    break;
+                case error.message.includes('invalid userEmail'):
+                    statusCode = 400
+                    errorMessage = 'Email anready in use!'
+                    break;
+                case error.message.includes('invalid email'):
+                    statusCode = 400
+                    errorMessage = 'Invalid email!'
+                    break;
+                case error.message.includes('invalid password'):
+                    statusCode = 400
+                    errorMessage = 'Password needs to be 6-10 longer, and have an Uppercase, a Lowercase and a number'
+                    break;
+                case error.message.includes('invalid confirm password'):
+                    statusCode = 402
+                    errorMessage = 'Password does not match with confirm password'
+                    break;
+                default:
+                    break;
+            }
+        catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
+    }
+}
