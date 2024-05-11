@@ -84,6 +84,9 @@ export const createUploadComment = async (req: Request, res: Response) => {
 
         const { message } = req.body
 
+        console.log(message);
+
+
         if (!message) {
             throw new Error('no message')
         }
@@ -91,22 +94,24 @@ export const createUploadComment = async (req: Request, res: Response) => {
         const upload = await Upload.findOne({
             where: {
                 id: uploadId
-            },
-            relations: ['uploadComments']
+            }
         })
 
         if (!upload) {
             throw new Error('upload doesnt exists')
         }
 
-        await UploadComment.create({
-            message: message,
+        const newComment = await UploadComment.create({
+            message: `${user.name}: ${message}`,
             upload: upload,
             author: user
         }).save()
 
+        
 
-        tryStatus(res, 'Upload comment created', upload)
+
+
+        tryStatus(res, 'Upload comment created', newComment)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'
