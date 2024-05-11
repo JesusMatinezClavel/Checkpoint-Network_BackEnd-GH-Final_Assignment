@@ -35,7 +35,6 @@ export const getAllUploads = async (req: Request, res: Response) => {
         catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
     }
 }
-
 export const createUpload = async (req: Request, res: Response) => {
     try {
 
@@ -86,7 +85,6 @@ export const createUpload = async (req: Request, res: Response) => {
         catchStatus(res, statusCode, 'CANNOT CREATE UPLOAD', new Error(errorMessage))
     }
 }
-
 export const deleteOwnUpload = async (req: Request, res: Response) => {
     try {
         const userId = req.tokenData.userId

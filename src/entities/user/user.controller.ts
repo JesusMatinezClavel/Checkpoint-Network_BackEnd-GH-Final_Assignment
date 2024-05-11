@@ -6,17 +6,21 @@ import path from "path";
 
 // Models
 import { User } from "./User";
+import { Upload } from "../upload/Upload";
 
 
 export const getProfile = async (req: Request, res: Response) => {
     try {
         const userId = Number(req.params.id)
 
+
         const user = await User.findOne({
             where: {
                 id: userId
-            }
+            },
+            relations: ["role", "uploads", "uploadComments.upload", "postComments.post", "followers", "following", "likes",]
         })
+        console.log(user);
 
         if (!user) {
             throw new Error('user doesnt exists')
@@ -38,10 +42,9 @@ export const getProfile = async (req: Request, res: Response) => {
                 default:
                     break;
             }
-        catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
+        catchStatus(res, statusCode, 'CANNOT GET PROFILE BY ID', new Error(errorMessage))
     }
 }
-
 export const getOwnProfile = async (req: Request, res: Response) => {
     try {
         const userId = req.tokenData.userId
@@ -73,10 +76,9 @@ export const getOwnProfile = async (req: Request, res: Response) => {
                 default:
                     break;
             }
-        catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
+        catchStatus(res, statusCode, 'CANNOT GET OWN PROFILE', new Error(errorMessage))
     }
 }
-
 export const updateOwnProfile = async (req: Request, res: Response) => {
     try {
         const userId = req.tokenData.userId
@@ -215,7 +217,6 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
         catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
     }
 }
-
 export const deleteOwnUser = async (req: Request, res: Response) => {
     try {
         const userId = req.tokenData.userId
@@ -271,5 +272,149 @@ export const deleteOwnUser = async (req: Request, res: Response) => {
                     break;
             }
         catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
+    }
+}
+export const addRemoveLikes = async (req: Request, res: Response) => {
+    try {
+        const userId = req.tokenData.userId
+        const user = await User.findOne({
+            where: {
+                id: userId
+            },
+            relations: ['likes']
+        })
+        if (!user) {
+            throw new Error('user doesnt exists')
+        }
+
+        const uploadId = Number(req.params.id)
+        const upload = await Upload.findOne({
+            where: {
+                id: uploadId
+            }
+        })
+        if (!upload) {
+            throw new Error('upload doesnt exists')
+        }
+
+        const existUpload = user.likes.some(like => like.id === uploadId);
+        if (existUpload) {
+            user.likes = user.likes.filter(like => like.id !== uploadId);
+            await user.save();
+            const probar = await User.findOne({
+                where: {
+                    id: userId
+                },
+                relations: ['likes']
+            })
+            tryStatus(res, 'Upload disliked', probar);
+        } else {
+            user.likes.push(upload);
+            await user.save();
+            const probar = await User.findOne({
+                where: {
+                    id: userId
+                },
+                relations: ['likes']
+            })
+            tryStatus(res, 'Upload liked', probar);
+        }
+    } catch (error) {
+        let statusCode: number = 500
+        let errorMessage: string = 'Unkown error ocurred...'
+
+        if (error instanceof Error)
+            switch (true) {
+                case error.message.includes('user doesnt exists'):
+                    statusCode = 402
+                    errorMessage = 'User doesnt exists'
+                    break;
+                case error.message.includes('upload doesnt exists'):
+                    statusCode = 402
+                    errorMessage = 'Upload selected doesnt exists'
+                    break;
+                default:
+                    break;
+            }
+        catchStatus(res, statusCode, 'CANNOT LIKE/DISLIKE', new Error(errorMessage))
+    }
+}
+export const followUnfollow = async (req: Request, res: Response) => {
+    try {
+        const ownUserId = req.tokenData.userId
+        const ownUser = await User.findOne({
+            where: {
+                id: ownUserId
+            },
+            relations: ['following']
+        })
+        if (!ownUser) {
+            throw new Error('user doesnt exists')
+        }
+
+        const followUserId = Number(req.params.id)
+        const followUser = await User.findOne({
+            where: {
+                id: followUserId
+            },
+            relations: ['followers']
+        })
+        if (!followUser) {
+            throw new Error('upload doesnt exists')
+        }
+
+        if (ownUserId === followUserId) {
+            throw new Error('cannot oneself');
+        }
+
+        const isFollowed = ownUser.following.some(user => user.id === followUserId);
+
+        const ownUserBasic = await User.findOne({
+            where: {
+                id: ownUserId
+            }
+        }) as User
+        const followUserBasic = await User.findOne({
+            where: {
+                id: followUserId
+            }
+        }) as User
+
+
+        if (isFollowed) {
+            ownUser.following = ownUser.following.filter(user => user.id !== followUserId)
+            followUser.followers = followUser.followers.filter(user => user.id !== ownUserId)
+            await ownUser.save()
+            await followUser.save()
+            tryStatus(res, 'Unfollowing user', ownUser)
+        } else {
+            ownUser.following.push(followUserBasic)
+            followUser.followers.push(ownUserBasic)
+            await ownUser.save()
+            await followUser.save()
+            tryStatus(res, 'Following user', ownUser)
+        }
+    } catch (error) {
+        let statusCode: number = 500
+        let errorMessage: string = 'Unkown error ocurred...'
+
+        if (error instanceof Error)
+            switch (true) {
+                case error.message.includes('user doesnt exists'):
+                    statusCode = 402
+                    errorMessage = 'User doesnt exists'
+                    break;
+                case error.message.includes('upload doesnt exists'):
+                    statusCode = 402
+                    errorMessage = 'Upload selected doesnt exists'
+                    break;
+                case error.message.includes('cannot oneself'):
+                    statusCode = 402
+                    errorMessage = 'You cannot follow yourself'
+                    break;
+                default:
+                    break;
+            }
+        catchStatus(res, statusCode, 'CANNOT FOLLOW/UNFOLLOW', new Error(errorMessage))
     }
 }

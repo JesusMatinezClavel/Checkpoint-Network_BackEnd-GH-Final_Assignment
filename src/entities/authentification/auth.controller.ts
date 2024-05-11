@@ -142,7 +142,7 @@ export const login = async (req: Request, res: Response) => {
             roleName: user?.role.name
         },
             process.env.JWT_secret as string,
-            { expiresIn: '4h' }
+            { expiresIn: '2h' }
         )
 
         await User.update(
