@@ -12,7 +12,7 @@ const uploadModel = multer({ dest: '3D-models/' })
 
 router.post('/avatar', uploadAvatar.single('avatar'), registerAvatar)
 router.post('/upload', uploadModel.single('uploadFile'), auth, registerUpload)
-router.get('/avatar/:id', auth, getAvatar)
+router.get('/avatar/:id', getAvatar)
 router.get('/download/:id', getUploadFile)
 
 
