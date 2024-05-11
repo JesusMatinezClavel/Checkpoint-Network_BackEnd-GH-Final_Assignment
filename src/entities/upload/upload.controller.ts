@@ -5,6 +5,7 @@ import { User } from "../user/User";
 import fs from "fs";
 import path from "path";
 import { ReadStream } from 'fs';
+import { Post } from "../post/Post";
 
 interface FilesContainer {
     files: ReadStream[];
@@ -16,6 +17,7 @@ const __filePath = path.dirname(__fileName)
 
 export const getAllUploads = async (req: Request, res: Response) => {
     try {
+        
         const uploads = await Upload.find({ relations: ["liked", "uploadComments", "posts", "user"] })
 
         tryStatus(res, 'Uploads succesfully called!', uploads)

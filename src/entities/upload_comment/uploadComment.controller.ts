@@ -107,11 +107,15 @@ export const createUploadComment = async (req: Request, res: Response) => {
             author: user
         }).save()
 
-        
 
+        const uploadComments = await Upload.findOne({
+            where: {
+                id: uploadId
+            },
+            relations:['uploadComments']
+        })   
 
-
-        tryStatus(res, 'Upload comment created', newComment)
+        tryStatus(res, 'Upload comment created', uploadComments)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'

@@ -291,7 +291,8 @@ export const addRemoveLikes = async (req: Request, res: Response) => {
         const upload = await Upload.findOne({
             where: {
                 id: uploadId
-            }
+            },
+            relations: ['liked']
         })
         if (!upload) {
             throw new Error('upload doesnt exists')
@@ -301,23 +302,11 @@ export const addRemoveLikes = async (req: Request, res: Response) => {
         if (existUpload) {
             user.likes = user.likes.filter(like => like.id !== uploadId);
             await user.save();
-            const probar = await User.findOne({
-                where: {
-                    id: userId
-                },
-                relations: ['likes']
-            })
-            tryStatus(res, 'Upload disliked', probar);
+            tryStatus(res, 'Upload disliked', upload.liked);
         } else {
             user.likes.push(upload);
             await user.save();
-            const probar = await User.findOne({
-                where: {
-                    id: userId
-                },
-                relations: ['likes']
-            })
-            tryStatus(res, 'Upload liked', probar);
+            tryStatus(res, 'Upload liked', upload.liked);
         }
     } catch (error) {
         let statusCode: number = 500
