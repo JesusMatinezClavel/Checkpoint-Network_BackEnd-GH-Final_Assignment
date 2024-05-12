@@ -17,7 +17,7 @@
 </details>
 
 ## Objective 🎯
-My objective for this project was to create a functional API connected to a database with some relations @ManyToOne and @ManyToMany and at the same time create a frontend for this project in [This Repository](https://github.com/JesusMatinezClavel/SocialNetwork-API_5-GH-Assignment.git).
+My objective for this project was to create a functional API connected to a database with some relations @ManyToOne and @ManyToMany and at the same time create a frontend for this project in [This Repository](https://github.com/JesusMatinezClavel/Checkpoint-FrontEnd-GH-Final_Assignment.git).
 
 ## About the project📑
 This aplication has been created as the finnal assignment for the GeeksHub's FullStackDeveloper bootcamp with the objective of developing the structure needed for the backend of a Social Network centered in sharing 3D models. This API allows anyone to check for some of the models uploaded by the users and register in it to have your own profile, aside from creating or deleting uploads and creating comments in all of the models. It also allows the user with Super_admin role to delete or call users.  
