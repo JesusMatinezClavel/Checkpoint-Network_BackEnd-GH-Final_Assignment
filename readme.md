@@ -1,6 +1,6 @@
 # Checkpoint's Network📢
 
-![Tattoo_Studio](./img/reader/reader.jpg)
+![Tattoo_Studio](./img/readme/readme.jpg)
 
 <details>
   <summary>Content 📝</summary>
@@ -36,8 +36,21 @@ This aplication has been created as the finnal assignment for the GeeksHub's Ful
 <a href="https://www.typescriptlang.org/">
     <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white"/>
 </a>
+<a href="https://www.npmjs.com/package/multer">
+    <img src="https://img.shields.io/badge/Multer-%232c3e50.svg?style=for-the-badge&logo=node.js&logoColor=white"/>
+</a>
+<a href="https://nodejs.org/api/fs.html">
+    <img src="https://img.shields.io/badge/fs-%23FFA500.svg?style=for-the-badge&logo=node.js&logoColor=white"/>
+</a>
+<a href="https://nodejs.org/api/path.html">
+    <img src="https://img.shields.io/badge/path-%231177B8.svg?style=for-the-badge&logo=node.js&logoColor=white"/>
+</a>
 <a href="https://jwt.io/">
     <img src= "https://img.shields.io/badge/JWT-grey?style=for-the-badge&logo=JSON%20web%20tokens"/>
+</a>
+<a href="https://www.npmjs.com/package/cors">
+    <img src= "https://img.shields.io/badge/Cors-purple?style=for-the-badge
+    "/>
 </a>
 <a href="https://www.npmjs.com/package/dotenv">
     <img src= "https://img.shields.io/badge/dotenv-blue?style=for-the-badge&logo=dotenv    "/>
@@ -54,7 +67,7 @@ This aplication has been created as the finnal assignment for the GeeksHub's Ful
  </div>
 
 ## DB Diagram📉
-![Diagram for the first tables created](./img/reader/DB_Diagram.png)
+![Diagram for the first tables created](./img/readme/DB_Diagram.png)
 
 ## Local installation🔨
 1. Clone the repository:
