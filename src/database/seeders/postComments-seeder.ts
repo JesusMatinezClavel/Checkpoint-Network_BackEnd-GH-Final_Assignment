@@ -20,7 +20,7 @@ const postCommentGenerator = async () => {
             const randomPostComment = new PostComment()
             randomPostComment.post = post
             const author = randomPostComment.author = users[faker.number.int({ min: 0, max: 19 })]
-            randomPostComment.message = `${author.name}: ${faker.lorem.sentence()}`
+            randomPostComment.message = `${author.name}: ${faker.person.jobDescriptor()}`
             randomPostComment.createdAt = new Date()
             randomPostComment.updatedAt = new Date()
             comments.push(randomPostComment)

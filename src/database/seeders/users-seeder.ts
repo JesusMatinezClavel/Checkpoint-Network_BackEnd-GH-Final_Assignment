@@ -22,7 +22,7 @@ export const seedControlUsers = async () => {
     controlUser.createdAt = new Date()
     controlUser.updatedAt = new Date()
     await controlUser.save()
-    const userAvatarPath = path.join(__dirname, '../../../img/default-ProfileImg.png')
+    const userAvatarPath = path.join(__dirname, '../../../seeder-files/default-ProfileImg.png')
     const userDestinationPath = path.join(__dirname, '../../../', 'img/', 'avatars')
     fs.copyFileSync(userAvatarPath, path.join(userDestinationPath, `${controlUser.name}-default-ProfileImg.png`))
 
@@ -39,7 +39,7 @@ export const seedControlUsers = async () => {
     controlAdmin.createdAt = new Date()
     controlAdmin.updatedAt = new Date()
     await controlAdmin.save()
-    const adminAvatarPath = path.join(__dirname, '../../../img/default-ProfileImg.png')
+    const adminAvatarPath = path.join(__dirname, '../../../seeder-files/default-ProfileImg.png')
     const adminDestinationPath = path.join(__dirname, '../../../', 'img/', 'avatars')
     fs.copyFileSync(adminAvatarPath, path.join(adminDestinationPath, `${controlAdmin.name}-default-ProfileImg.png`))
 
@@ -57,7 +57,7 @@ export const seedControlUsers = async () => {
     controlSuper.createdAt = new Date()
     controlSuper.updatedAt = new Date()
     await controlSuper.save()
-    const superadminAvatarPath = path.join(__dirname, '../../../img/default-ProfileImg.png')
+    const superadminAvatarPath = path.join(__dirname, '../../../seeder-files/default-ProfileImg.png')
     const superadminDestinationPath = path.join(__dirname, '../../../', 'img/', 'avatars')
     fs.copyFileSync(superadminAvatarPath, path.join(superadminDestinationPath, `${controlSuper.name}-default-ProfileImg.png`))
 
@@ -71,26 +71,32 @@ const generateRandomUsers = async () => {
     let unique = false;
     let name;
     let randomUser = new User();
+    let existingUser
 
-    const avatarPath = path.join(__dirname, '../../../img/default-ProfileImg.png')
+    const avatarPath = path.join(__dirname, '../../../seeder-files/default-ProfileImg.png')
     const destinationPath = path.join(__dirname, '../../../', 'img/', 'avatars')
 
     while (!unique) {
         name = faker.person.firstName();
-        const existingUser = await User.findOne({ where: { name: name } });
-        !existingUser
-            ? (
-                unique = true,
-                randomUser.name = name,
-                randomUser.avatar = `${randomUser.name}-default-ProfileImg.png`,
-                randomUser.bio = faker.person.bio(),
-                randomUser.email = faker.internet.email({ firstName: name, provider: 'email.com' }),
-                randomUser.password = bcrypt.hashSync(faker.internet.password({ length: 8, memorable: true }) + faker.number.int({ min: 0, max: 9 }), 8),
-                randomUser.createdAt = new Date(),
-                randomUser.updatedAt = new Date(),
-                fs.copyFileSync(avatarPath, path.join(destinationPath, `${randomUser.name}-default-ProfileImg.png`))
-            )
-            : generateRandomUsers()
+        try {
+            existingUser = await User.findOne({ where: { name: name } });
+            !existingUser
+                ? (
+                    unique = true,
+                    randomUser.name = name,
+                    randomUser.avatar = `${randomUser.name}-default-ProfileImg.png`,
+                    randomUser.bio = faker.person.bio(),
+                    randomUser.email = faker.internet.email({ firstName: name, provider: 'email.com' }),
+                    randomUser.password = bcrypt.hashSync(faker.internet.password({ length: 8, memorable: true }) + faker.number.int({ min: 0, max: 9 }), 8),
+                    randomUser.createdAt = new Date(),
+                    randomUser.updatedAt = new Date(),
+                    fs.copyFileSync(avatarPath, path.join(destinationPath, `${randomUser.name}-default-ProfileImg.png`))
+                )
+                : generateRandomUsers()
+        } catch (error) {
+            console.log(error);
+
+        }
     }
 
     return randomUser;

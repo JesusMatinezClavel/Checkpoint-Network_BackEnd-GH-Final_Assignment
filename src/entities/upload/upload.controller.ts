@@ -5,7 +5,6 @@ import { User } from "../user/User";
 import fs from "fs";
 import path from "path";
 import { ReadStream } from 'fs';
-import { Post } from "../post/Post";
 
 interface FilesContainer {
     files: ReadStream[];
@@ -17,8 +16,23 @@ const __filePath = path.dirname(__fileName)
 
 export const getAllUploads = async (req: Request, res: Response) => {
     try {
-        
-        const uploads = await Upload.find({ relations: ["liked", "uploadComments", "posts", "user"] })
+        const limit = 6
+        const page = Number(req.query.page) || 1
+        const skip = (page - 1) * limit
+        const lengPosts = await Upload.find()
+
+        if (page <= 0 || !Number.isInteger(page)) {
+            throw new Error('page invalid')
+        }
+        if (skip >= lengPosts.length) {
+            throw new Error('no more uploads')
+        }
+
+        const uploads = await Upload.find({
+            skip: skip,
+            take: limit,
+            relations: ["liked", "uploadComments", "posts", "user"]
+        })
 
         tryStatus(res, 'Uploads succesfully called!', uploads)
     } catch (error) {
@@ -30,6 +44,14 @@ export const getAllUploads = async (req: Request, res: Response) => {
                 case error.message.includes('required fields'):
                     statusCode = 400
                     errorMessage = 'email and password are necessary! '
+                    break;
+                case error.message.includes('page invalid'):
+                    statusCode = 400
+                    errorMessage = 'Page selected is not valid'
+                    break;
+                case error.message.includes('no more uploads'):
+                    statusCode = 400
+                    errorMessage = 'There are no more users to show!'
                     break;
                 default:
                     break;
@@ -91,26 +113,30 @@ export const deleteOwnUpload = async (req: Request, res: Response) => {
     try {
         const userId = req.tokenData.userId
         const uploadId = Number(req.params.id)
-
         const user = await User.findOne({
             where: {
                 id: userId
             }
         })
-
         if (!user) {
             throw new Error('user doesnt exists')
         }
-
         const upload = await Upload.findOne({
             where: {
                 id: uploadId
             }
         })
-
         if (!upload) {
             throw new Error('upload doesnt exists')
         }
+
+        const filePath = path.join(__dirname, '../../../', `3D-Models/${user.name}`, `${upload.name}`)
+
+        if (!fs.existsSync(filePath)) {
+            throw new Error('file not found')
+        }
+
+        fs.unlinkSync(filePath)
 
         await Upload.delete(uploadId)
 
@@ -128,6 +154,10 @@ export const deleteOwnUpload = async (req: Request, res: Response) => {
                 case error.message.includes('upload doesnt exists'):
                     statusCode = 409
                     errorMessage = "Upload doesn't exists"
+                    break;
+                case error.message.includes('file not found'):
+                    statusCode = 409
+                    errorMessage = "Cannot find the model!"
                     break;
                 default:
                     break;

@@ -2,13 +2,16 @@ import { Router } from "express";
 
 // Middlewares
 import { auth } from "../../middlewares/auth-middleware";
-import { addRemoveLikes, deleteOwnUser, followUnfollow, getOwnProfile, getProfile, updateOwnProfile } from "./user.controller";
+import { addRemoveLikes, deleteOwnUser, deleteUserBySuperadmin, followUnfollow, getAllUsersBySuperadmin, getOwnProfile, getProfile, updateOwnProfile } from "./user.controller";
 
 // Controllers
 
 
 
 const router = Router()
+
+router.get('/superadmin', auth, getAllUsersBySuperadmin)
+router.delete('/superadmin/:id', auth, deleteUserBySuperadmin)
 
 router.get('/profile/:id', auth, getProfile)
 router.get('/profile/', auth, getOwnProfile)

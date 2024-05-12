@@ -12,7 +12,6 @@ export const register = async (req: Request, res: Response) => {
     try {
         let { name, avatar, email, password } = req.body
 
-        // // Validations
         if (!name || !email || !password) {
             throw new Error('required fields')
         }
@@ -142,7 +141,7 @@ export const login = async (req: Request, res: Response) => {
             roleName: user?.role.name
         },
             process.env.JWT_secret as string,
-            { expiresIn: '2h' }
+            { expiresIn: '168h' }
         )
 
         await User.update(
