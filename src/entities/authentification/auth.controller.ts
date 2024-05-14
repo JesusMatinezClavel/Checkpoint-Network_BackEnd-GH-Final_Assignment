@@ -48,7 +48,7 @@ export const register = async (req: Request, res: Response) => {
 
         const newUser = await User.create({
             name,
-            avatar: `${name}-${avatar}`,
+            avatar,
             email,
             password: passwordEncrypted
         }).save()
