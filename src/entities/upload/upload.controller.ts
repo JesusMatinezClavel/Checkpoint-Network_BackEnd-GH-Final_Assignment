@@ -59,6 +59,54 @@ export const getAllUploads = async (req: Request, res: Response) => {
         catchStatus(res, statusCode, 'CANNOT LOGIN', new Error(errorMessage))
     }
 }
+
+export const getOwnUploads = async (req: Request, res: Response) => {
+    try {
+
+        const userId = req.tokenData.userId
+
+        const limit = 3
+        const page = Number(req.query.page) || 1
+        const skip = (page - 1) * limit
+        const lengPosts = await Upload.find({
+        })
+        if (page <= 0 || !Number.isInteger(page)) {
+            throw new Error('page invalid')
+        }
+        if (skip >= lengPosts.length) {
+            throw new Error('no more uploads')
+        }
+
+        const user = await User.findOne({
+            where: {
+                id: userId
+            }
+        })
+
+        const uploads = await Upload.find({
+            relations: ["user"],
+        })
+
+        const userUploads = uploads.filter(upload => upload.user.id === userId)
+
+        tryStatus(res, 'Uploads by id succesfully called!', userUploads)
+    } catch (error) {
+        let statusCode: number = 500
+        let errorMessage: string = 'Unkown error ocurred...'
+
+        if (error instanceof Error)
+            switch (true) {
+                case error.message.includes('required fields'):
+                    statusCode = 400
+                    errorMessage = 'email and password are necessary! '
+                    break;
+                default:
+                    break;
+            }
+        catchStatus(res, statusCode, 'CANNOT GET UPLOADS BY ID', new Error(errorMessage))
+    }
+}
+
 export const createUpload = async (req: Request, res: Response) => {
     try {
 
