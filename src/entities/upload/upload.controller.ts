@@ -116,8 +116,11 @@ export const createUpload = async (req: Request, res: Response) => {
         const user = await User.findOne({
             where: {
                 id: userId
-            }
+            },
+            relations: ['uploads']
         })
+        console.log("PREVIOUSUSUSUS -> ", user);
+
 
         if (!user) {
             throw new Error('user doesnt exists')
@@ -134,6 +137,15 @@ export const createUpload = async (req: Request, res: Response) => {
                 id: userId
             }
         }).save()
+
+        const userP = await User.findOne({
+            where: {
+                id: userId
+            },
+            relations: ['uploads']
+        })
+
+        console.log("NEW UPLOADES -> ", userP);
 
 
         tryStatus(res, 'New upload created!', newUpload)
@@ -188,7 +200,15 @@ export const deleteOwnUpload = async (req: Request, res: Response) => {
 
         await Upload.delete(uploadId)
 
-        tryStatus(res, 'Upload deleted!', null)
+        const userUploads = await Upload.find({
+            where: {
+                user: {
+                    id: userId
+                }
+            }
+        })
+
+        tryStatus(res, 'Upload deleted!', userUploads)
     } catch (error) {
         let statusCode: number = 500
         let errorMessage: string = 'Unkown error ocurred...'
@@ -210,6 +230,6 @@ export const deleteOwnUpload = async (req: Request, res: Response) => {
                 default:
                     break;
             }
-        catchStatus(res, statusCode, 'CANNOT CREATE UPLOAD', new Error(errorMessage))
+        catchStatus(res, statusCode, 'CANNOT DELETE UPLOAD', new Error(errorMessage))
     }
 }
